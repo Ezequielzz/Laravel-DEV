@@ -16,63 +16,61 @@ class ProdutoController extends Controller
         return view('produtos.index', compact('produtos'));
     }
 
+
     public function create()
     {
         return view('produtos.create');
     }
 
+
     public function store(Request $request)
     {
         $request->validate([
-            'nome'=>'required',
-            'descricao'=>'required',
-            'preco'=>'required|decimal',
+            'nome' => 'required',
+            'descricao' => 'required',
+            'preco' => 'required|numeric',
         ]);
+
 
         Produto::create($request->all());
 
-        return redirect()->route('produtos.index')
-                         ->with('success', 'Produto criado com sucesso.');
 
+        return redirect()->route('produtos.index')
+            ->with('success', 'Produto criado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Produto $produto)
     {
         return view('produtos.show', compact('produto'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Produto $produto)
     {
         return view('produto.edit', compact('produto'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Produto $produto)
     {
         $request->validate([
             'nome' => 'required',
-            'descricao'=>'required',
-            'preco' => 'required|decimal',
+            'descricao' => 'required',
+            'preco' => 'required|numeric',
         ]);
+        $produto->update($request->all());
+        return redirect()->route('produtos.index')
+            ->with('success', 'Produto atualizado com sucesso.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Produto $produto)
     {
         $produto->delete();
 
-        return redirect()->route('produtos.index')
-                         ->with('success', 'Produto Deletado com Sucesso.');
-    }
 
+        return redirect()->route('produtos.index')
+            ->with('success', 'Produto Deletado com Sucesso.');
+    }
 }
